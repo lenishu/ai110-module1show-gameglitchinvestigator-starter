@@ -34,17 +34,17 @@ def check_guess(guess, secret):
         return "Win", "🎉 Correct!"
 
     try:
-        if guess > secret:
-            return "Too High", "📈 Go HIGHER!"
+        if guess > secret: #  changed here.. ( reverse the order) 
+            return "Too High", "📉 Go Lower!"
         else:
-            return "Too Low", "📉 Go LOWER!"
+            return "Too Low", "📈 Go Higher!"
     except TypeError:
         g = str(guess)
         if g == secret:
             return "Win", "🎉 Correct!"
-        if g > secret:
-            return "Too High", "📈 Go HIGHER!"
-        return "Too Low", "📉 Go LOWER!"
+        if g > secret: 
+            return "Too High", "📉 Go Lower!"
+        return "Too Low", "📈 Go Higher!"
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
