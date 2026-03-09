@@ -7,7 +7,7 @@ def get_range_for_difficulty(difficulty: str):
     if difficulty == "Normal":
         return 1, 100
     if difficulty == "Hard":
-        return 1, 50
+        return 1, 1000 # difficulty value changed 
     return 1, 100
 
 
@@ -34,7 +34,7 @@ def check_guess(guess, secret):
         return "Win", "🎉 Correct!"
 
     try:
-        if guess > secret: #  changed here.. ( reverse the order) 
+        if guess > secret:  
             return "Too High", "📉 Go Lower!"
         else:
             return "Too Low", "📈 Go Higher!"
@@ -49,14 +49,14 @@ def check_guess(guess, secret):
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
     if outcome == "Win":
-        points = 100 - 10 * (attempt_number + 1)
+        points = 100 - 10 * attempt_number # changed to go from 100 to last point
         if points < 10:
             points = 10
         return current_score + points
 
     if outcome == "Too High":
         if attempt_number % 2 == 0:
-            return current_score + 5
+            return current_score -5 # just chant from + 5 to -5
         return current_score - 5
 
     if outcome == "Too Low":
@@ -93,7 +93,7 @@ if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 1
+    st.session_state.attempts = 0
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -131,11 +131,15 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
-if new_game:
+if new_game: # made change to reset game state when new game is started
     st.session_state.attempts = 0
+    st.session_state.score = 0
+    st.session_state.history = []
+    st.session_state.status = "playing"
     st.session_state.secret = random.randint(1, 100)
     st.success("New game started.")
     st.rerun()
+
 
 if st.session_state.status != "playing":
     if st.session_state.status == "won":
